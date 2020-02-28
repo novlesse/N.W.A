@@ -1,9 +1,10 @@
 class Album:
-    def __init__(self, name, year, songs, cover_img, artist=None, song_list=None):
+    def __init__(self, name, year, songs, cover_img, language, artist=None, song_list=None):
         self.name = name
         self.year = year
         self.songs = songs
         self.cover_img = cover_img
+        self.language = language
         if artist is None:
             self.artist = Artist("Album Artists")
         else:
@@ -31,6 +32,9 @@ class Artist:
         self.name = name
         self.language = language
         self.albums = []
+
+    def add_album(self, album):
+        self.albums.append(album)
 
 
 class Playlist:
