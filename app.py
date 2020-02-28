@@ -9,11 +9,13 @@ class Album:
         else:
             self.artist = artist
         self.song_list = []
+
     def add_song(self, song, position=None):
         if position is None:
             self.song_list.append(song)
         else:
             self.song_list.insert(position, song)
+
 
 class Song:
     def __init__(self, name, duration, lyrics, artist_name, language, album_name, cover_img, year, song):
@@ -21,14 +23,17 @@ class Song:
         self.duration = duration
         self.lyrics = lyrics
         self.artist = Artist(artist_name, language)
-        self.image = Album(album_name,cover_img, year, song)
+        self.image = Album(album_name, cover_img, year, song)
 
-class Artist: 
-    def __init__(self, name, language="English", albums = 1):
+
+class Artist:
+    def __init__(self, name, language="English", albums=1):
         self.name = name
         self.language = language
         self.albums = []
-class Playlist: 
-    def __init__(self, name, songs = 0):
+
+
+class Playlist:
+    def __init__(self, name, songs=0):
         self.name = name
         self.songs = []
