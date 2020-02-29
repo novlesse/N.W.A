@@ -9,10 +9,7 @@ class Album:
     def add_song(self, name, duration, lyrics, artist_name, language):
         self.song = Song(name, duration, lyrics, artist_name, language)
         self.song_list.append(self.song)
-    # def add_existing_song(self, song):
-    #     self.song = song
-    #     self.song_list.append(self.song)
-        # self.song.image = self.cover_img
+
 
 
 class Song:
