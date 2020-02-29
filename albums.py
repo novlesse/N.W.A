@@ -22,8 +22,8 @@ class User:
     def make_playlist(self, name):
         self.private_playlist = PrivatePlaylist(name)
 
-    def remove_playlist(self, name):
-        del name
+    def remove_playlist(self):
+        del self.private_playlist
 
 
 class Album:
@@ -119,8 +119,12 @@ john.private_playlist.add_song(first_album)
 # this is calling the method inside PrivatePlaylist class to show all songs inside that playlist
 john.private_playlist.show_songs_in_playlist()
 
+# Shows your PrivatePlaylist instance with name "John's playlist"
+print(john.private_playlist.name)
 
-
+# Removes a users playlist!
+john.remove_playlist()
+print(john.private_playlist)
 
 
 
