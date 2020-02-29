@@ -71,11 +71,10 @@ class Song:
 
 
 class Artist: 
-    def __init__(self, name, language="English", albums=1):
+    def __init__(self, name, language="English"):
         self.name = name
         self.language = language
-        self.album_amount = albums
-    
+
 
 class PrivatePlaylist: 
     def __init__(self, name):
