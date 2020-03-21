@@ -7,6 +7,11 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
+playlist_songs = db.Table("playlist_songs",
+    db.Column("private_playlist_id", db.Integer, db.ForeignKey("private_playlists.id")),
+    db.Column("song_id", db.Integer, db.ForeignKey("songs.id"))
+    )
+
 class User(db.Model):
     __tablename__ = "users"
 
@@ -107,14 +112,12 @@ class Artist(db.Model):
 
 
 class PrivatePlaylist(db.Model): 
-    __tablename__ = "private_playlist"
+    __tablename__ = "private_playlists"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), unique=False, nullable=False)
     username_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     username = db.relationship("User", backref="privateplaylist", lazy=True)
-    # def __init__(self, name):
-    #     self.name = name
-    #     self.songs = []
+    songs = db.relationship("Song", secondary=playlist_songs)
     
     def add_song(self, song):
         self.song = song
@@ -136,7 +139,8 @@ db.create_all()
 
 john = User(username="John", email="john@hotmail.com", password="1234")
 db.session.add(john)
-
+emm = User(username="Emm", email="emm@hotmail.com", password="1234")
+db.session.add(emm)
 
 singer = Artist(name="Jeff")
 db.session.add(singer)
@@ -150,6 +154,8 @@ db.session.add(first_album)
 
 song = Song(name="Happy", duration=300, year=2020, lyrics='Happyyyier', artist=singer, album=first_album)
 db.session.add(song)
+song2 = Song(name="song2", duration=300, year=2020, lyrics='secondsong', artist=singer, album=first_album)
+db.session.add(song2)
 
 # Instantiate Album and add song.
 
@@ -164,8 +170,10 @@ db.session.add(song)
 # db.session.add(song)
 
 # Instantiate Private Playlist
-playlist_name = PrivatePlaylist(name="Emmy's Playlist", username=john)
+playlist_name = PrivatePlaylist(name="Emmy's Playlist", username=emm)
 print(playlist_name.username.username)
+playlist_name.songs.append(song)
+playlist_name.songs.append(song2)
 #playlist_name.add_song("Emmy's Song")
 db.session.add(playlist_name)
 
