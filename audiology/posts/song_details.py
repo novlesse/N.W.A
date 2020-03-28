@@ -28,11 +28,18 @@ def get_track_tags(response):
         tag_list.append(tags['name'])
     return tag_list
 
+def get_album_name(response):
+    if 'album' in response.json()['track']:
+        return response.json()['track']['album']['title']
+    else:
+        return response.json()['track']['name']
+
 
 def get_track_image(response):
-    for images in response.json()['track']['album']['image']:
-        if images['size'] == 'large':
-            return images['#text']
+    if 'album' in response.json()['track']:
+        return response.json()['track']['album']['image'][2]['#text']
+    else:
+        return 'default.jpg'
 
 
 def get_lyrics(payload, song, artist):

@@ -8,7 +8,7 @@ from audiology.models import Post, Album, Artist, Song, PrivatePlaylist
 from audiology.posts.forms import PostForm
 from audiology.posts.audio import list_files, download_file, upload_file
 from audiology.posts.song_details import (jsonprint, get_details, get_track_tags,
-                                          get_track_image, get_lyrics)
+                                          get_track_image, get_lyrics, get_album_name)
 
 posts = Blueprint('posts', __name__)
 # UPLOAD_FOLDER = "uploads"
@@ -31,7 +31,6 @@ def new_post():
         song_lyrics = get_lyrics({
             'format': 'json'
         }, form.song_name.data, form.artist.data)
-
         song_image = get_track_image(song_details)
         song_duration = song_details.json()['track']['duration']
         song_tags = get_track_tags(song_details)
@@ -41,6 +40,14 @@ def new_post():
         else:
             artist = artist_query
         db.session.add(artist)
+<<<<<<< HEAD
+        album_query = Album.query.filter_by(name=get_album_name(song_details)).first()
+        if not album_query:
+            album = Album(name=get_album_name(song_details),
+                            year=form.year.data,
+                            image_file=song_image,
+                            artist=artist)
+=======
         album_query = Album.query.filter_by(
             name=song_details.json()['track']['album']['title']).first()
         if not album_query:
@@ -48,6 +55,7 @@ def new_post():
                           year=form.year.data,
                           image_file=song_image,
                           artist=artist)
+>>>>>>> f4fdc0542e31a6801cb6fd1f2958ba63dde6ffb4
         else:
             album = album_query
         db.session.add(album)
