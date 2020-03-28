@@ -74,11 +74,14 @@ def new_post():
             print(song)
             print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
+        
+        samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
+        db.session.add(samplepost)
         db.session.commit()
-        song_file = request.files['file']
-        song_file.save(os.path.join("uploads", song_file.filename))
-        upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
-        os.remove(f'uploads/{song_file.filename}')
+        # song_file = request.files['file']
+        # song_file.save(os.path.join("uploads", song_file.filename))
+        # upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
+        # os.remove(f'uploads/{song_file.filename}')
         flash('Your post has been created.', 'success')
         return redirect(url_for('main.home'))
     return render_template('create_post.html', title='New Post',

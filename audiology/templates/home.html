@@ -10,8 +10,17 @@
                 href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
             <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
         </div>
-        <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-        <p class="article-content">{{ post.content }}</p>
+        <div class="content-container d-flex ">
+            <div class="album-cover">
+                <img class = 'img-thumbnail img-fluid'src='{{ post.cover_img }}' style="width: 10rem; height: auto"> 
+            </div>
+            <div class="content-text m-3 ">
+                <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+                <p class="article-content">{{ post.content }} </p>
+            </div>
+        </div>
+        <!-- <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+        <p class="article-content">{{ post.content }}</p> -->
     </div>
 </article>
 {% endfor %}
