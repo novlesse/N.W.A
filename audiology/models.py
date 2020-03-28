@@ -63,8 +63,8 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False,
-                           default='default.jpg')
+    image_file = db.Column(db.String(255), nullable=False,
+                           server_default='default.jpg')
     artist_id = db.Column(db.Integer, db.ForeignKey(
         "artists.id"), nullable=True)
     artist = db.relationship("Artist", backref="albums", lazy=True)

@@ -30,7 +30,7 @@ def create_app(config_class=Config):
     app.register_blueprint(errors)
     
     db.init_app(app)
-    with app.app_context():
-        db.drop_all()
-        db.create_all()
+    # with app.app_context():
+    #     db.drop_all()
+    #     db.create_all()
     return app
