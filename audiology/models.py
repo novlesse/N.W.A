@@ -51,6 +51,7 @@ class Post(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
+    cover_img = db.Column(db.String(255), default='https://lastfm.freetls.fastly.net/i/u/174s/8c0a91d3ebb2b38b3a6962af726728fa.png')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
