@@ -68,15 +68,15 @@ def new_post():
         if not playlist_query:
             playlist = PrivatePlaylist(name=current_user.username,
                                        username=current_user)
-            db.session.add(playlist)
+            db.session.add(playlist) 
             playlist.songs.append(song)
         else:
             print(song)
             print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
         
-        samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
-        db.session.add(samplepost)
+        # samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
+        # db.session.add(samplepost)
         db.session.commit()
         # song_file = request.files['file']
         # song_file.save(os.path.join("uploads", song_file.filename))
