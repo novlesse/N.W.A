@@ -14,6 +14,7 @@ posts = Blueprint('posts', __name__)
 # UPLOAD_FOLDER = "uploads"
 # BUCKET = "audiologyfiles"
 
+
 @posts.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
@@ -39,12 +40,22 @@ def new_post():
         else:
             artist = artist_query
         db.session.add(artist)
+<<<<<<< HEAD
         album_query = Album.query.filter_by(name=get_album_name(song_details)).first()
         if not album_query:
             album = Album(name=get_album_name(song_details),
                             year=form.year.data,
                             image_file=song_image,
                             artist=artist)
+=======
+        album_query = Album.query.filter_by(
+            name=song_details.json()['track']['album']['title']).first()
+        if not album_query:
+            album = Album(name=song_details.json()['track']['album']['title'],
+                          year=form.year.data,
+                          image_file=song_image,
+                          artist=artist)
+>>>>>>> f4fdc0542e31a6801cb6fd1f2958ba63dde6ffb4
         else:
             album = album_query
         db.session.add(album)
@@ -60,25 +71,30 @@ def new_post():
         else:
             song = song_query
         db.session.add(song)
-        playlist_query = PrivatePlaylist.query.filter_by(username_id=current_user.id).first()
+        playlist_query = PrivatePlaylist.query.filter_by(
+            username_id=current_user.id).first()
         if not playlist_query:
             playlist = PrivatePlaylist(name=current_user.username,
-                                    username=current_user)
+                                       username=current_user)
             db.session.add(playlist)
             playlist.songs.append(song)
         else:
             print(song)
             print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
+        
+        samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
+        db.session.add(samplepost)
         db.session.commit()
-        song_file = request.files['file']
-        song_file.save(os.path.join("uploads", song_file.filename))
-        upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
-        os.remove(f'uploads/{song_file.filename}')
+        # song_file = request.files['file']
+        # song_file.save(os.path.join("uploads", song_file.filename))
+        # upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
+        # os.remove(f'uploads/{song_file.filename}')
         flash('Your post has been created.', 'success')
         return redirect(url_for('main.home'))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
+
 
 @posts.route("/download/<filename>", methods=["GET"])
 def download(filename):
@@ -86,6 +102,7 @@ def download(filename):
         output = download_file(filename, BUCKET)
 
         return send_file(output, as_attachment=True)
+
 
 @posts.route("/post/<int:post_id>")
 def post(post_id):
@@ -124,11 +141,9 @@ def delete_post(post_id):
     flash('Your post has been deleted.', 'success')
     return redirect(url_for('main.home'))
 
+
 @posts.route("/storage")
 @login_required
 def storage():
     contents = list_files("audiologyfiles")
     return render_template('storage.html', contents=contents)
-
-
-
