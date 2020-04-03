@@ -71,7 +71,7 @@ class Album(db.Model):
     artist = db.relationship("Artist", backref="albums", lazy=True)
 
 
-class Song(db.Model):
+class Song(db.Model):   
     __tablename__ = "songs"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=False, nullable=False)
@@ -89,8 +89,8 @@ class Song(db.Model):
     def __rep__(self):
         return(f"Song Name: {self.name}\nSong Length: {self.duration}\nLyrics: {self.lyrics}\nArtist: {self.artist.name}\nLanguage: {self.artist.language}\nAlbum Cover: {self.image}")
 
-
-class Artist(db.Model):
+  
+class Artist(db.Model):  
     __tablename__ = "artists"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=False, nullable=False)

@@ -40,14 +40,6 @@ def new_post():
         else:
             artist = artist_query
         db.session.add(artist)
-<<<<<<< HEAD
-        album_query = Album.query.filter_by(name=get_album_name(song_details)).first()
-        if not album_query:
-            album = Album(name=get_album_name(song_details),
-                            year=form.year.data,
-                            image_file=song_image,
-                            artist=artist)
-=======
         album_query = Album.query.filter_by(
             name=song_details.json()['track']['album']['title']).first()
         if not album_query:
@@ -55,7 +47,6 @@ def new_post():
                           year=form.year.data,
                           image_file=song_image,
                           artist=artist)
->>>>>>> f4fdc0542e31a6801cb6fd1f2958ba63dde6ffb4
         else:
             album = album_query
         db.session.add(album)
@@ -76,15 +67,15 @@ def new_post():
         if not playlist_query:
             playlist = PrivatePlaylist(name=current_user.username,
                                        username=current_user)
-            db.session.add(playlist)
+            db.session.add(playlist) 
             playlist.songs.append(song)
         else:
             print(song)
             print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
         
-        samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
-        db.session.add(samplepost)
+        # samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
+        # db.session.add(samplepost)
         db.session.commit()
         # song_file = request.files['file']
         # song_file.save(os.path.join("uploads", song_file.filename))

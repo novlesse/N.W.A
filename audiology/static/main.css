@@ -89,3 +89,12 @@ a.article-title:hover {
 .account-heading {
     font-size: 2.5rem;
 }
+
+audio{
+    width: 40rem;
+}
+
+.audio-content{
+    align-content: center;
+}
+
