@@ -8,7 +8,7 @@ from audiology.models import Post, Album, Artist, Song, PrivatePlaylist
 from audiology.posts.forms import PostForm
 from audiology.posts.audio import list_files, download_file, upload_file
 from audiology.posts.song_details import (jsonprint, get_details, get_track_tags,
-                                          get_track_image, get_lyrics)
+                                          get_track_image, get_lyrics, get_album_name)
 
 posts = Blueprint('posts', __name__)
 # UPLOAD_FOLDER = "uploads"
@@ -31,7 +31,6 @@ def new_post():
         song_lyrics = get_lyrics({
             'format': 'json'
         }, form.song_name.data, form.artist.data)
-
         song_image = get_track_image(song_details)
         song_duration = song_details.json()['track']['duration']
         song_tags = get_track_tags(song_details)
