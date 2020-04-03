@@ -62,7 +62,7 @@ def account():
         flash('Your account has been updated.', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
-        form.username.data = current_user.username
+        form.username.data = "helllllo"
         form.email.data = current_user.email
     image_file = url_for(
         'static', filename='profile_pics/' + current_user.image_file)
@@ -79,7 +79,11 @@ def user_posts(username):
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
     songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
-    length = len(songs.songs)
+    print(songs)
+    if songs:
+        length = len(songs.songs)
+    else:
+        length = 0
 
     return render_template('user_playlist.html', songs=songs, user=user, length=length)
 

@@ -6,7 +6,7 @@ from flask import (render_template, url_for, flash,
 from flask_login import current_user, login_required
 from audiology import db
 from audiology.models import Post, Album, Artist, Song, PrivatePlaylist
-from audiology.posts.forms import PostForm
+from audiology.posts.forms import SongForm, UpdateSongForm
 from audiology.posts.audio import list_files, download_file, upload_file
 from audiology.posts.song_details import (jsonprint, get_details, get_track_tags,
                                           get_track_image, get_lyrics, get_album_name,
@@ -19,7 +19,7 @@ posts = Blueprint('posts', __name__)
 @posts.route("/post/new", methods=['GET', 'POST'])
 @login_required
 def new_post():
-    form = PostForm()
+    form = SongForm()
     if form.validate_on_submit():
 
         song_details = get_details({
@@ -98,24 +98,26 @@ def post(post_id):
     return render_template('post.html', title=post.title, post=post)
 
 
-@posts.route("/post/<int:post_id>/update", methods=['GET', 'POST'])
+@posts.route("/post/<int:song_id>/update", methods=['GET', 'POST'])
 @login_required
-def update_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        abort(403)
-    form = PostForm()
+def update_song(song_id):
+    song = Song.query.get_or_404(song_id)
+    # if post.author != current_user:
+    #     abort(403)
+    form = UpdateSongForm()
     if form.validate_on_submit():
-        post.title = form.title.data
-        post.content = form.content.data
+        song.name = form.song_name.data
+        song.artist.name = form.artist.data
+        song.lyrics = form.lyrics.data
         db.session.commit()
-        flash('Your post has been updated.', 'success')
-        return redirect(url_for('posts.post', post_id=post.id))
+        flash('Song has been updated.', 'success')
+        return redirect(url_for('posts.update_song', song_id=song.id))
     elif request.method == 'GET':
-        form.title.data = post.title
-        form.content.data = post.content
-    return render_template('create_post.html', title='Update Post',
-                           form=form, legend='Update Post')
+        form.song_name.data = song.name
+        form.artist.data = song.artist.name
+        form.lyrics.data = song.lyrics
+    return render_template('update_song.html', title='Update Song',
+                           form=form, legend='Update Song')
 
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])

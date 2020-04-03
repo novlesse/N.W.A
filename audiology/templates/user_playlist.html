@@ -1,6 +1,10 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1 class="mb-3">Playlist for {{ user.username }} ({{ length }})</h1>
+{% if length != 0 %}
+    <h4 class="mb-3">Playlist for {{ user.username }} ({{ length }})</h1>
+{% else %}
+    <p>Your playlist is empty. Try adding some songs!</p>
+{% endif %}
 {% for song in songs.songs %}
 <article class="media content-section">
     <div class="media-body">
@@ -9,9 +13,9 @@
                 <img class = 'img-thumbnail img-fluid'src='{{ song.image_file }}' style="width: 10rem; height: auto"> 
             </div>
             <div class="content-text m-3 ">
-                <h2><a class="article-title" >{{ song.name }}</a></h2>
+                <h4><a class="article-title" >{{ song.name }}</a></h4>
                 <p class="article-content">{{ song.artist.name }} </p>
-
+                <a class="article-content" href="{{ url_for('posts.update_song', song_id=song.id) }}">Edit</a>
             </div>
         </div>
     </div>

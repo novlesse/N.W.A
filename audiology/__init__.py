@@ -34,11 +34,5 @@ def create_app(config_class=Config):
     db.init_app(app)
     # with app.app_context():
     #     db.drop_all()
-<<<<<<< HEAD
-    #     db.create_all() 
-    return app 
-   
-=======
     #     db.create_all()
     return app
->>>>>>> master
