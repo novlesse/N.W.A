@@ -78,8 +78,8 @@ def new_post():
         # song_file.save(os.path.join("uploads", song_file.filename))
         # upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
         # os.remove(f'uploads/{song_file.filename}')
-        flash('Your post has been created.', 'success')
-        return redirect(url_for('main.home'))
+        flash('Your song has been added.', 'success')
+        return redirect(url_for("users.user_posts", username=username))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
@@ -120,10 +120,10 @@ def update_song(song_id):
                            form=form, legend='Update Song')
 
 
-@posts.route("/post/<int:post_id>/delete", methods=['POST'])
+@posts.route("/post/<int:song_id>/delete", methods=['POST'])
 @login_required
-def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
+def delete_post(song_id):
+    playlist_song = PrivatePlaylist.query.get_or_404(song_id)
     if post.author != current_user:
         abort(403)
     db.session.delete(post)

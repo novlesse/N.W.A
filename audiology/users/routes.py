@@ -62,7 +62,7 @@ def account():
         flash('Your account has been updated.', 'success')
         return redirect(url_for('users.account'))
     elif request.method == 'GET':
-        form.username.data = "helllllo"
+        form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for(
         'static', filename='profile_pics/' + current_user.image_file)
@@ -76,17 +76,41 @@ def user_posts(username):
     if current_user.username != username:
         content = flash("You do not have permissions to view this user's playlist", "danger")
         return redirect(url_for("main.home"))
-    page = request.args.get('page', 1, type=int)
+    page = request.args.get("page", 1, type=int)
+    delete_song = request.args.get("delete_song", type=int)
     user = User.query.filter_by(username=username).first_or_404()
     songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
-    print(songs)
+
+    print(songs.songs)
     if songs:
         length = len(songs.songs)
     else:
         length = 0
-
+    if delete_song:
+        for song in songs.songs:
+            if song.id == delete_song:
+                songs.songs.remove(song)
+                db.session.commit()
+                flash("Song was successfully removed from your playlist.", "success")
+                return redirect(url_for("users.user_posts", username=username))
     return render_template('user_playlist.html', songs=songs, user=user, length=length)
 
+# @users.route("/user/<string:username>")
+# @login_required
+# def user_posts(username):
+#     if current_user.username != username:
+#         content = flash("You do not have permissions to view this user's playlist", "danger")
+#         return redirect(url_for("main.home"))
+#     page = request.args.get('page', 1, type=int)
+#     user = User.query.filter_by(username=username).first_or_404()
+#     songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
+#     print(songs.songs)
+#     if songs:
+#         length = len(songs.songs)
+#     else:
+#         length = 0
+    
+#     return render_template('user_playlist.html', songs=songs, user=user, length=length)
 @users.route("/songs", methods=['GET', 'POST'])
 @login_required
 def users_playlist():
