@@ -1,21 +1,15 @@
-<center>
-<br><br>
+<br>
+<h1 align="center">A u d i o l o g y</h1>
+<h2 align="center">COMP 2523 - Object Oriented Programming</h2>
+<h3 align="center">FINAL PROJECT : Apple Music Clone</h3>
 
-# A U D I O L O G Y
+<p align="center">
+<img src="image_assets/audiologyLogoClear.png">
+</p>
 
-## COMP 2523 - Object Oriented Programming
-
-### FINAL PROJECT : Apple Music Clone
-
-![Audiology Logo](/image_assets/audiologyLogoClear.png)
-
-## N.W.A
-
-### **Nerds With Attitude**
-
-#### By: John Nguy | Emmy Wong | Jeffrey Lau
-
-</center>
+<h2 align="center">N.W.A</h2>
+<h2 align="center">Nerds With Attitdude</h2>
+<h4 align="center">By: John Nguy | Emmy Wong | Jeffrey Lau</h4>
 <br><br>
 
 ## Instructions
