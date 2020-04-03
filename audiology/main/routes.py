@@ -1,5 +1,5 @@
 from flask import render_template, request, Blueprint
-from audiology.models import Post
+from audiology.models import Song, Post
 
 main = Blueprint('main', __name__)
 
@@ -7,9 +7,11 @@ main = Blueprint('main', __name__)
 @main.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    posts = Post.query.order_by(
-        Post.date_posted.desc()).paginate(page=page, per_page=10)
-    return render_template('home.html', posts=posts)
+    # posts = Post.query.order_by(
+    #     Post.date_posted.desc()).paginate(page=page, per_page=10)
+    posts = Song.query.order_by(
+        Song.id.desc()).paginate(page=page, per_page=10)
+    return render_template('hometest.html', posts=posts)
 
 
 @main.route("/about")

@@ -8,7 +8,9 @@ playlist_songs = db.Table("playlist_songs",
                           db.Column("private_playlist_id", db.Integer,
                                     db.ForeignKey("private_playlists.id")),
                           db.Column("song_id", db.Integer,
-                                    db.ForeignKey("songs.id"))
+                                    db.ForeignKey("songs.id")),
+                          db.Column("date_added", db.DateTime, nullable=False,
+                            default=datetime.utcnow)
                           )
 
 
@@ -48,7 +50,7 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False,
+    date_added = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
     cover_img = db.Column(db.String(255), default='https://lastfm.freetls.fastly.net/i/u/174s/8c0a91d3ebb2b38b3a6962af726728fa.png')

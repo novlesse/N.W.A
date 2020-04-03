@@ -1,7 +1,7 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from audiology import db, bcrypt
-from audiology.models import User, Post
+from audiology.models import User, Post, PrivatePlaylist
 from audiology.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from audiology.users.utils import save_picture, send_reset_email
@@ -71,13 +71,17 @@ def account():
 
 
 @users.route("/user/<string:username>")
+@login_required
 def user_posts(username):
+    if current_user.username != username:
+        content = flash("You do not have permissions to view this user's playlist", "danger")
+        return redirect(url_for("main.home"))
     page = request.args.get('page', 1, type=int)
     user = User.query.filter_by(username=username).first_or_404()
-    posts = Post.query.filter_by(author=user)\
-        .order_by(Post.date_posted.desc())\
-        .paginate(page=page, per_page=5)
-    return render_template('user_posts.html', posts=posts, user=user)
+    songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
+    length = len(songs.songs)
+
+    return render_template('user_playlist.html', songs=songs, user=user, length=length)
 
 @users.route("/songs", methods=['GET', 'POST'])
 @login_required

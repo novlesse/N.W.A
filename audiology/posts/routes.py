@@ -1,5 +1,6 @@
 import os
 import boto3
+import json
 from flask import (render_template, url_for, flash,
                    redirect, request, abort, Blueprint, send_file)
 from flask_login import current_user, login_required
@@ -8,11 +9,11 @@ from audiology.models import Post, Album, Artist, Song, PrivatePlaylist
 from audiology.posts.forms import PostForm
 from audiology.posts.audio import list_files, download_file, upload_file
 from audiology.posts.song_details import (jsonprint, get_details, get_track_tags,
-                                          get_track_image, get_lyrics, get_album_name)
+                                          get_track_image, get_lyrics, get_album_name,
+                                          get_artist_image)
 
 posts = Blueprint('posts', __name__)
-# UPLOAD_FOLDER = "uploads"
-# BUCKET = "audiologyfiles"
+
 
 
 @posts.route("/post/new", methods=['GET', 'POST'])
@@ -20,10 +21,6 @@ posts = Blueprint('posts', __name__)
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
-
-        # song_file = request.files['file']
-        # song_file.save(os.path.join("uploads", song_file.filename))
-        # upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
 
         song_details = get_details({
             'method': 'track.getinfo'
@@ -40,22 +37,12 @@ def new_post():
         else:
             artist = artist_query
         db.session.add(artist)
-<<<<<<< HEAD
         album_query = Album.query.filter_by(name=get_album_name(song_details)).first()
         if not album_query:
             album = Album(name=get_album_name(song_details),
                             year=form.year.data,
                             image_file=song_image,
                             artist=artist)
-=======
-        album_query = Album.query.filter_by(
-            name=song_details.json()['track']['album']['title']).first()
-        if not album_query:
-            album = Album(name=song_details.json()['track']['album']['title'],
-                          year=form.year.data,
-                          image_file=song_image,
-                          artist=artist)
->>>>>>> f4fdc0542e31a6801cb6fd1f2958ba63dde6ffb4
         else:
             album = album_query
         db.session.add(album)
@@ -79,8 +66,8 @@ def new_post():
             db.session.add(playlist)
             playlist.songs.append(song)
         else:
-            print(song)
-            print(playlist_query.id)
+            # print(song)
+            # print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
         
         samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
