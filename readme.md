@@ -31,3 +31,11 @@
 #### Run:
 
 > python3 run.py
+
+<br>
+
+## License & Copyright
+
+Copyright (c) 2020, John Nguy, Emmy Wong, Jeffrey Lau
+
+Licensed under the [MIT License](license.md).
