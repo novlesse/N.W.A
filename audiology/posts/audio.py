@@ -4,10 +4,10 @@ def upload_file(file_name, bucket):
     """
     Function to upload a file to an S3 bucket
     """
-    object_name = file_name
+
+    object_name = "".join(file_name.split())
     s3_client = boto3.client('s3')
     response = s3_client.upload_file(file_name, bucket, object_name)
-
     return response
 
 def download_file(file_name, bucket):
@@ -29,4 +29,12 @@ def list_files(bucket):
     for item in s3.list_objects(Bucket=bucket)['Contents']:
         contents.append(item)
 
-    return contents
+    return contents   
+  
+def get_bucket_location(file_name, bucket):
+
+    s3 = boto3.resource('s3') 
+    # location = s3.get_bucket_location(Bucket=bucket)['LocationConstraint']
+    url = 'https://%s.s3-us-west-1.amazonaws.com/uploads/%s' % (bucket, file_name)
+
+    return url 

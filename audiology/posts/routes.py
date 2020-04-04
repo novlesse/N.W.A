@@ -7,7 +7,7 @@ from flask_login import current_user, login_required
 from audiology import db
 from audiology.models import Post, Album, Artist, Song, PrivatePlaylist
 from audiology.posts.forms import SongForm, UpdateSongForm
-from audiology.posts.audio import list_files, download_file, upload_file
+from audiology.posts.audio import list_files, download_file, upload_file, get_bucket_location
 from audiology.posts.song_details import (jsonprint, get_details, get_track_tags,
                                           get_track_image, get_lyrics, get_album_name,
                                           get_artist_image)
@@ -31,21 +31,37 @@ def new_post():
         song_image = get_track_image(song_details)
         song_duration = song_details.json()['track']['duration']
         song_tags = get_track_tags(song_details)
+
+        song_file = request.files['file']
+        song_file.save(os.path.join("uploads", song_file.filename))
+        upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
+        file_location = "".join(song_file.filename.split())
+        audio_path = get_bucket_location(file_location, "audiologyfiles")
+        print(audio_path)
+        os.remove(f'uploads/{song_file.filename}')
+
         artist_query = Artist.query.filter_by(name=form.artist.data).first()
         if not artist_query:
             artist = Artist(name=form.artist.data)
         else:
             artist = artist_query
         db.session.add(artist)
-        album_query = Album.query.filter_by(
-            name=song_details.json()['track']['album']['title']).first()
+
+        if 'album' not in song_details.json()['track']:
+            album_query = Album.query.filter_by(name=song_details.json()['track']['name']).first()
+            album_name = song_details.json()['track']['name']
+        else:
+            album_query = Album.query.filter_by(
+                name=song_details.json()['track']['album']['title']).first()
+            album_name = song_details.json()['track']['album']['title']
+
         if not album_query:
-            album = Album(name=song_details.json()['track']['album']['title'],
+            album = Album(name=album_name, 
                           year=form.year.data,
                           image_file=song_image,
                           artist=artist)
         else:
-            album = album_query
+            album = album_query 
         db.session.add(album)
         song_query = Song.query.filter_by(name=form.song_name.data).first()
         if not (song_query and album_query):
@@ -53,12 +69,14 @@ def new_post():
                         duration=song_duration,
                         year=form.year.data,
                         lyrics=song_lyrics,
+                        audio_file=audio_path,
                         image_file=song_image,
                         artist=artist,
                         album=album)
         else:
             song = song_query
         db.session.add(song)
+
         playlist_query = PrivatePlaylist.query.filter_by(
             username_id=current_user.id).first()
         if not playlist_query:
@@ -67,19 +85,11 @@ def new_post():
             db.session.add(playlist) 
             playlist.songs.append(song)
         else:
-            # print(song)
-            # print(playlist_query.id)
             playlist = playlist_query.songs.append(song)
         
-        # samplepost= Post(title=song.name, content=song.artist.name, user_id=current_user.id, cover_img=song.image_file)
-        # db.session.add(samplepost)
         db.session.commit()
-        # song_file = request.files['file']
-        # song_file.save(os.path.join("uploads", song_file.filename))
-        # upload_file(f'uploads/{song_file.filename}', "audiologyfiles")
-        # os.remove(f'uploads/{song_file.filename}')
         flash('Your song has been added.', 'success')
-        return redirect(url_for("users.user_posts", username=username))
+        return redirect(url_for("users.user_playlist", username=current_user.username))
     return render_template('create_post.html', title='New Post',
                            form=form, legend='New Post')
 
@@ -102,8 +112,6 @@ def post(post_id):
 @login_required
 def update_song(song_id):
     song = Song.query.get_or_404(song_id)
-    # if post.author != current_user:
-    #     abort(403)
     form = UpdateSongForm()
     if form.validate_on_submit():
         song.name = form.song_name.data
@@ -120,19 +128,7 @@ def update_song(song_id):
                            form=form, legend='Update Song')
 
 
-@posts.route("/post/<int:song_id>/delete", methods=['POST'])
-@login_required
-def delete_post(song_id):
-    playlist_song = PrivatePlaylist.query.get_or_404(song_id)
-    if post.author != current_user:
-        abort(403)
-    db.session.delete(post)
-    db.session.commit()
-    flash('Your post has been deleted.', 'success')
-    return redirect(url_for('main.home'))
-
-
-@posts.route("/storage")
+@posts.route("/storage") 
 @login_required
 def storage():
     contents = list_files("audiologyfiles")

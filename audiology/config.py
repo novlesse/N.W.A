@@ -12,6 +12,13 @@ class Config:
     MAIL_USE_TLS = True
     MAIL_USERNAME = 'bcitapp.demos@gmail.com'
     MAIL_PASSWORD = '!Calculator'
+    # DROPZONE
+
+    DROPZONE_DEFAULT_MESSAGE = "Drop files here"
+    DROPZONE_ALLOWED_FILE_TYPE = 'audio'
+    DROPZONE_MAX_FILE_SIZE = 10
+    DROPZONE_MAX_FILES = 1
+    DROPZONE_FILE_TOO_BIG = "File is too big {{filesize}}MB. Max filesize: {{maxFilesize}}MB."
 
 # TO DO: CONVERT INTO ENVIRONMENT VARIABLES (nano .bash_profile >> os.environ.get)
 # EXAMPLE
