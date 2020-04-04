@@ -1,12 +1,15 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
 <div class="content-section">
+
     <form method="POST" action="" enctype="multipart/form-data">
         {{ form.hidden_tag() }}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">{{ legend }}</legend>
             <div class="form-group">
+            
                 {{ form.song_name.label(class="form-control-label") }}
                 {% if form.song_name.errors %}
                 {{ form.song_name(class="form-control form-control-lg is-invalid") }}
@@ -45,11 +48,19 @@
                 {{ form.artist(class="form-control form-control-lg") }}
                 {% endif %}
             </div>
-
+            <div class="input-group">
+                <div class="custom-file">
+                    <input type="file" name="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+                    <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+                </div>
+            </div>            
+            
         </fieldset>
+
         <div class="form-group">
             {{ form.submit(class="btn btn-outline-info") }}
         </div>
     </form>
 </div>
+
 {% endblock content %}

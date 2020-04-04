@@ -80,6 +80,7 @@ class Song(db.Model):
     duration = db.Column(db.Integer, unique=False, nullable=False)
     year = db.Column(db.Integer, nullable=True)
     lyrics = db.Column(db.String(255), unique=False, nullable=True)
+    audio_file = db.Column(db.String(255), unique=False, nullable=False)
     image_file = db.Column(db.String(255), nullable=False,
                            default='default.jpg')
     artist_id = db.Column(db.Integer, db.ForeignKey(

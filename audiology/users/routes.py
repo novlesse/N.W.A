@@ -1,17 +1,17 @@
 from flask import render_template, url_for, flash, redirect, request, Blueprint
 from flask_login import login_user, current_user, logout_user, login_required
 from audiology import db, bcrypt
-from audiology.models import User, Post, PrivatePlaylist
+from audiology.models import User, Post, PrivatePlaylist, Song
 from audiology.users.forms import (RegistrationForm, LoginForm, UpdateAccountForm,
                                    RequestResetForm, ResetPasswordForm)
 from audiology.users.utils import save_picture, send_reset_email
 
-users = Blueprint('users', __name__)
+users = Blueprint('users', __name__) 
 
 
 @users.route("/register", methods=['GET', 'POST'])
 def register():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated:  
         return redirect(url_for('main.home'))
     form = RegistrationForm()
     if form.validate_on_submit():
@@ -28,7 +28,7 @@ def register():
 
 @users.route("/login", methods=['GET', 'POST'])
 def login():
-    if current_user.is_authenticated:
+    if current_user.is_authenticated: 
         return redirect(url_for('main.home'))
     form = LoginForm()
     if form.validate_on_submit():
@@ -72,7 +72,8 @@ def account():
 
 @users.route("/user/<string:username>")
 @login_required
-def user_posts(username):
+def user_playlist(username):
+
     if current_user.username != username:
         content = flash("You do not have permissions to view this user's playlist", "danger")
         return redirect(url_for("main.home"))
@@ -81,7 +82,6 @@ def user_posts(username):
     user = User.query.filter_by(username=username).first_or_404()
     songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
 
-    print(songs.songs)
     if songs:
         length = len(songs.songs)
     else:
@@ -92,31 +92,24 @@ def user_posts(username):
                 songs.songs.remove(song)
                 db.session.commit()
                 flash("Song was successfully removed from your playlist.", "success")
-                return redirect(url_for("users.user_posts", username=username))
+                return redirect(url_for("users.user_playlist", username=username))
     return render_template('user_playlist.html', songs=songs, user=user, length=length)
 
-# @users.route("/user/<string:username>")
-# @login_required
-# def user_posts(username):
-#     if current_user.username != username:
-#         content = flash("You do not have permissions to view this user's playlist", "danger")
-#         return redirect(url_for("main.home"))
-#     page = request.args.get('page', 1, type=int)
-#     user = User.query.filter_by(username=username).first_or_404()
-#     songs = PrivatePlaylist.query.filter_by(username_id=user.id).first()
-#     print(songs.songs)
-#     if songs:
-#         length = len(songs.songs)
-#     else:
-#         length = 0
-    
-#     return render_template('user_playlist.html', songs=songs, user=user, length=length)
-@users.route("/songs", methods=['GET', 'POST'])
-@login_required
-def users_playlist():
-    songs = PrivatePlaylist.query.filter_by()
 
-    return render_template('user_playlist.html', title='Playlist')
+@users.route("/user/update")
+@login_required
+def update_playlist():
+    add_song = request.args.get("add_song_to_playlist", type=int)
+    page = request.args.get("page", 1, type=int)
+
+    user = User.query.filter_by(username=current_user.username).first_or_404()
+    playlist = PrivatePlaylist.query.filter_by(username_id=current_user.id).first()
+    song_to_add = Song.query.filter_by(id=add_song).first()
+
+    playlist.songs.append(song_to_add)
+    db.session.commit()
+    flash("Song was added to your playlist.", "success")
+    return redirect(url_for("main.home", username=current_user.username))
 
 
 @users.route("/reset_password", methods=['GET', 'POST'])

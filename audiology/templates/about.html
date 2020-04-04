@@ -1,5 +1,16 @@
-{% extends "layout.html" %}
+<div class="input-group">
+    <div class="custom-file">
+        <input type="file" name="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
+        <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
+    </div>
+</div>
 
-{% block content %}
-<h1>About Page</h1>
-{% endblock content %}
+
+
+
+{{ dropzone.load_css() }}
+{{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 200px;') }}
+{{ dropzone.create(action='/post/new') }}
+{{ dropzone.create('/post/new') }}
+{{ dropzone.load_js() }}
+{{ dropzone.config() }}
