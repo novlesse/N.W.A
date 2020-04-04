@@ -22,6 +22,19 @@ def get_details(payload, song_name, artist):
     return response
 
 
+def get_artist_image(artist):
+    headers = {'user-agent': 'Audiology'}
+    url = 'http://ws.audioscrobbler.com/2.0/'
+    payload = {
+        'method': 'artist.getInfo'
+    }
+    payload['artist'] = artist
+    payload['api_key'] = '558863e8d1f0c76c81aa1448d99ed62a'
+    payload['format'] = 'json'
+
+    response = requests.get(url, headers=headers, params=payload)
+    return response
+
 def get_track_tags(response):
     tag_list = []
     for tags in response.json()['track']['toptags']['tag']:
@@ -29,10 +42,19 @@ def get_track_tags(response):
     return tag_list
 
 
+def get_album_name(response):
+    if 'album' in response.json()['track']:
+        return response.json()['track']['album']['title']
+    else:
+        return response.json()['track']['name']
+
+
 def get_track_image(response):
-    for images in response.json()['track']['album']['image']:
-        if images['size'] == 'large':
-            return images['#text']
+    if 'album' in response.json()['track']:
+        return response.json()['track']['album']['image'][2]['#text']
+    else:
+        image = get_artist_image(response.json()['track']['artist']['name'])
+        return image.json()['artist']['image'][2]['#text']
 
 
 def get_lyrics(payload, song, artist):

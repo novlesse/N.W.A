@@ -1,32 +1,46 @@
 {% extends "layout.html" %}
 {% block content %}
-<h1 class="mb-3">Playlist for {{ user.username }} ({{ posts.total }})</h1>
-{% for song in songs %}
-<article class="media content-section">
-    <img class="rounded-circle article-img"
-        src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-    <div class="media-body">
-        <div class="article-metadata">
-            <a class="mr-2">
-                {{ post.author.username }}</a>
-            <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+{% if length != 0 %}
+<div class="d-flex justify-content-between">
+    <h4 class="mb-3">Playlist for {{ user.username }} ({{ length }})</h1>
+        <div class="d-flex flex-row-reverse">
+            <a class="btn btn-info mb-4 center" href="{{ url_for('posts.new_post') }}">Add Song</a>
         </div>
-        <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-        <p class="article-content">{{ post.content }}</p>
+    </div>
+{% else %}
+<div class="d-flex justify-content-between">
+    <p>Your playlist is empty. Try adding some songs!</p>
+    <div class="d-flex flex-row-reverse">
+        <a class="btn btn-info mb-4 center" href="{{ url_for('posts.new_post') }}">Add Song</a>
+    </div>
+</div>
+{% endif %}
+{% for song in songs.songs %}
+<article class="media content-section">
+    <div class="media-body">
+        <div class="content-container d-flex ">
+            <div class="album-cover">
+                <img class = 'img-responsive' src='{{ song.image_file }}' style="width: 10rem; height: auto"> 
+            </div>
+            <div class="content-text m-3 ">
+                <h4><a class="article-title" >{{ song.name }}</a></h4>
+                <p class="article-content">{{ song.artist.name }} </p>
+                
+                {% if current_user.is_authenticated %}
+                <a class="article-content btn btn-info" href="{{ url_for('posts.update_song', song_id=song.id) }}">Edit</a>
+                <a class="article-content btn btn-danger" href="{{ url_for('users.user_playlist', username=user.username, delete_song=song.id) }}">Delete</a>  
+                {% endif %} 
+            </div>
+
+            <div class="audio-content m-3 flex-fill align-items-center">
+                <audio controls class="mt-3">
+                    <source src='{{ song.audio_file }}' type="audio/mp3">
+                </audio>
+            </div>
+
+        </div>
     </div>
 </article>
 {% endfor %}
-{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
-{% if page_num %}
-{% if posts.page == page_num %}
-<a class="btn btn-info mb-4"
-    href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
-{% else %}
-<a class="btn btn-outline-info mb-4"
-    href="{{ url_for('users.user_posts', username=user.username, page=page_num) }}">{{ page_num }}</a>
-{% endif %}
-{% else %}
-...
-{% endif %}
-{% endfor %}
+
 {% endblock content %}

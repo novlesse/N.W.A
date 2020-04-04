@@ -8,7 +8,9 @@ playlist_songs = db.Table("playlist_songs",
                           db.Column("private_playlist_id", db.Integer,
                                     db.ForeignKey("private_playlists.id")),
                           db.Column("song_id", db.Integer,
-                                    db.ForeignKey("songs.id"))
+                                    db.ForeignKey("songs.id")),
+                          db.Column("date_added", db.DateTime, nullable=False,
+                            default=datetime.utcnow)
                           )
 
 
@@ -48,9 +50,10 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False,
+    date_added = db.Column(db.DateTime, nullable=False,
                             default=datetime.utcnow)
     content = db.Column(db.Text, nullable=False)
+    cover_img = db.Column(db.String(255), default='https://lastfm.freetls.fastly.net/i/u/174s/8c0a91d3ebb2b38b3a6962af726728fa.png')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
@@ -63,20 +66,21 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
     year = db.Column(db.Integer, nullable=False)
-    image_file = db.Column(db.String(20), nullable=False,
-                           default='default.jpg')
+    image_file = db.Column(db.String(255), nullable=False,
+                           server_default='default.jpg')
     artist_id = db.Column(db.Integer, db.ForeignKey(
         "artists.id"), nullable=True)
     artist = db.relationship("Artist", backref="albums", lazy=True)
 
 
-class Song(db.Model):
+class Song(db.Model):   
     __tablename__ = "songs"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=False, nullable=False)
     duration = db.Column(db.Integer, unique=False, nullable=False)
     year = db.Column(db.Integer, nullable=True)
     lyrics = db.Column(db.String(255), unique=False, nullable=True)
+    audio_file = db.Column(db.String(255), unique=False, nullable=False)
     image_file = db.Column(db.String(255), nullable=False,
                            default='default.jpg')
     artist_id = db.Column(db.Integer, db.ForeignKey(
@@ -88,8 +92,8 @@ class Song(db.Model):
     def __rep__(self):
         return(f"Song Name: {self.name}\nSong Length: {self.duration}\nLyrics: {self.lyrics}\nArtist: {self.artist.name}\nLanguage: {self.artist.language}\nAlbum Cover: {self.image}")
 
-
-class Artist(db.Model):
+  
+class Artist(db.Model):  
     __tablename__ = "artists"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(40), unique=False, nullable=False)

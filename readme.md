@@ -12,15 +12,50 @@
 <h4 align="center">By: John Nguy | Emmy Wong | Jeffrey Lau</h4>
 <br><br>
 
-## Instructions
+1. Setup an AWS S3 account if you haven't already done so. 
 
-#### Virtual Environment:
+> https://aws.amazon.com/s3/
 
-> source venv/bin/activate
+2. Create a bucket along with the following directory:
 
-#### Install:
+> your_bucket_name/uploads
 
-> pip3 install -r requirements.txt
+3. run the following command in your terminal:
+
+> aws configure
+
+4. Enter the values below for the following prompts:
+
+> AWS Access Key ID: YOUR_ACCESS_KEY
+> AWS Secret Access Key: YOUR_SECRET_KEY
+> Default region name: us-west-1
+> Default output format: json
+
+5. Go to your S3 console https://s3.console.aws.amazon.com/
+
+6. Click on your bucket --> Permissions --> Bucket Policy
+
+7. Enter the following code to make your bucket public to access uploaded audio files:
+
+***Note:*** Replace `bucketname` with your bucket name.
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "PublicRead",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "arn:aws:s3:::bucketname/*"
+        }
+    ]
+}
+```
+
+8. Hit save.
+
 
 #### Run:
 

@@ -1,6 +1,5 @@
 import os
 
-
 class Config:
     # HASH
     SECRET_KEY = '0a86b4b6d6d9e48e6b34a9a3cbe90a83'
