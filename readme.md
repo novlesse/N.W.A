@@ -12,7 +12,7 @@
 <h4 align="center">By: John Nguy | Emmy Wong | Jeffrey Lau</h4>
 <br><br>
 
-1. Setup an AWS S3 account if you haven't already done so. 
+1. Setup an AWS S3 account if you haven't already done so.
 
 > https://aws.amazon.com/s3/
 
@@ -37,7 +37,7 @@
 
 7. Enter the following code to make your bucket public to access uploaded audio files:
 
-***Note:*** Replace `bucketname` with your bucket name.
+**_Note:_** Replace `bucketname` with your bucket name.
 
 ```
 {
@@ -56,6 +56,9 @@
 
 8. Hit save.
 
+#### Installation:
+
+> pip3 install -r requirements.txt
 
 #### Run:
 
