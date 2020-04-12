@@ -12,22 +12,7 @@
 <h4 align="center">By: John Nguy | Emmy Wong | Jeffrey Lau</h4>
 <br><br>
 
-
-## Instructions
-
-#### Virtual Environment:
-
-> source venv/bin/activate
-
-#### Install:
-
-> pip3 install -r requirements.txt
-
-#### Setting Up AWS S3:
-
-Audio files in this app are stored in AWS S3. You will need to create and setup an AWS account.
-
-1. Setup an AWS S3 account if you haven't already done so. 
+1. Setup an AWS S3 account if you haven't already done so.
 
 > https://aws.amazon.com/s3/
 
@@ -52,7 +37,7 @@ Audio files in this app are stored in AWS S3. You will need to create and setup 
 
 7. Enter the following code to make your bucket public to access uploaded audio files:
 
-***Note:*** Replace `bucketname` with your bucket name.
+**_Note:_** Replace `bucketname` with your bucket name.
 
 ```
 {
@@ -71,6 +56,9 @@ Audio files in this app are stored in AWS S3. You will need to create and setup 
 
 8. Hit save.
 
+#### Installation:
+
+> pip3 install -r requirements.txt
 
 #### Run:
 
