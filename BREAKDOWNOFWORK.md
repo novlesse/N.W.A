@@ -2,7 +2,7 @@
 
 
 ## Jeffrey Lau
-All Tasks 
+#### All Tasks 
 ---
 - task1
 - task2
@@ -12,7 +12,7 @@ All Tasks
 Explanation - I spent time learning how to use figma and design a beautiful landing page for our application.
 
 ## John Nguy
-All Tasks 
+#### All Tasks 
 ---
 
 Task Name: (Ex - Designing Landing Page in Figma)
@@ -20,7 +20,7 @@ Explanation - I spent time learning how to use figma and design a beautiful land
 
 
 ## Emmy Wong
-All Tasks 
+#### All Tasks 
 ---
 
 Task Name: (Ex - Designing Landing Page in Figma)
