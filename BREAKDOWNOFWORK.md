@@ -1,5 +1,6 @@
 # Audiology - Team Member Breakdown of Work
 
+We collaborated with VSCode's liveshare feature. 
 
 ## Jeffrey Lau
 ### All Tasks 
