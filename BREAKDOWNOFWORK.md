@@ -1,6 +1,6 @@
 # Audiology - Team Member Breakdown of Work
 
-We collaborated with VSCode's liveshare feature.
+We held collaboration sessions through VSCode's liveshare feature and communicated through slack to explain our work.
 
 ## Jeffrey Lau
 
@@ -43,6 +43,6 @@ Explanation - I spent time learning how to use figma and design a beautiful land
 
 ---
 
-#### Styling
+#### Explanation
 
-Used Bootstrap to style different sections of the front-end. I mostly contributed to styling on user playlist templates to make sure the album covers were accurately resized. Used minimal custom css as well to style the audio player to make it look a bit more modern.
+I collaborated with my team members in a group effort to design the database and implementing the schema using Flask sqlalchemy. I worked mostly on the templates, using Bootstrap to style different sections of the front-end such as making sure the album covers were accurately resized on user playlists. Prior to this project I had no experience with Flask and most technologies involved, so I had to do research on how to implement certain parts and pulling data from the database as well. 
