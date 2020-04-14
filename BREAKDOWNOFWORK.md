@@ -13,6 +13,7 @@ We held collaboration sessions through VSCode's liveshare feature and communicat
 - Integrated Bootstrap into initial phase of styling
 - Restructured files and modularized code into packages using Blueprint
 - Collaborated in the design of database
+- Designed logo for the group
 
 ---
 
@@ -26,8 +27,17 @@ Most of the work done was providing a MVP to work with. Added on the meat of the
 
 ---
 
-Task Name: (Ex - Designing Landing Page in Figma)
-Explanation - I spent time learning how to use figma and design a beautiful landing page for our application.
+- Implemented AWS S3 
+- Implemented Musixmatch and Last.fm API's 
+- Wrote database queries 
+- Collaborated in the design of the database
+- Collaborated in using WTForms, Jinja
+
+---
+
+#### Explanation
+
+Most of my work was focused on implementing the API's and pulling song lyrics and albums, Amazon S3 to handle larger file uploads such as mp3 files, and database queries into the server to pull and store data from the SQLite database. Hardest part was setting up many-to-many relationships in Flask SqlAlchemy as the structure is hard to wrap your head around. Being able to implement a working many-to-many join table into the server was a multi-day endeavour. 
 
 ## Emmy Wong
 
